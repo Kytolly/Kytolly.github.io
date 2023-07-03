@@ -2,14 +2,14 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
-        <loc>https://kytolly.icu/blog/</loc>
+        <loc>https://101.42.54.79/home/Kytolly/blog.git/</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
     </url>
 
 
     <url>
-        <loc>https://kytolly.icu/blog/posts/4a17b156.html</loc>
+        <loc>https://101.42.54.79/home/Kytolly/blog.git/posts/4a17b156.html</loc>
         <lastmod>2023-07-02T11:30:18.358Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -17,7 +17,7 @@
     </url>
 
     <url>
-        <loc>https://kytolly.icu/blog/posts/3610a686.html</loc>
+        <loc>https://101.42.54.79/home/Kytolly/blog.git/posts/3610a686.html</loc>
         <lastmod>2023-07-02T11:30:18.355Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
