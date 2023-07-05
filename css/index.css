@@ -1424,7 +1424,7 @@ input::placeholder {
   z-index: -999;
   width: 100%;
   height: 100%;
-  background: url(https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202307051218655.png);;
+  background: url(https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202307051218655.png?q-sign-algorithm=sha1&q-ak=AKIDIXffBf0BE7qRtBKH1jHyVq34qEwWu8C6&q-sign-time=1688531553;1688538753&q-key-time=1688531553;1688538753&q-header-list=&q-url-param-list=&q-signature=7fdeb1ba344e6ac98a6a63059c4485cdaf05333a);;
   background-attachment: local;
   background-position: center;
   background-size: cover;
