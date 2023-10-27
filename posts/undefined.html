@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>图论：最短路相关算法-Dijstra,SPFA and Floyd | Scarborough's Fair</title><meta name="author" content="Scarborough"><meta name="copyright" content="Scarborough"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Preface暑假集训用到了最短路的板子但之前的板子没存下来，在加上之前也看的不是很明白，故这里放点笔记； 部分板子目前还未测试过，谨慎使用(2023.7.15)； ContentProblem用链式前向星方式存储一个有权图G(V:E)，找到点 i,j 之间权值最小的路径长度； 注意：有时题目中的图其实就是树，而树的路径长度用 dfs 就好了不需要用这个； 通常包括\ Dijstra 算法,SPF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图论：最短路相关算法-Dijstra,SPFA and Floyd">
+<meta property="og:url" content="https://101.42.54.79/posts/undefined.html">
+<meta property="og:site_name" content="Scarborough&#39;s Fair">
+<meta property="og:description" content="Preface暑假集训用到了最短路的板子但之前的板子没存下来，在加上之前也看的不是很明白，故这里放点笔记； 部分板子目前还未测试过，谨慎使用(2023.7.15)； ContentProblem用链式前向星方式存储一个有权图G(V:E)，找到点 i,j 之间权值最小的路径长度； 注意：有时题目中的图其实就是树，而树的路径长度用 dfs 就好了不需要用这个； 通常包括\ Dijstra 算法,SPF">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2023-07-15T14:46:32.000Z">
+<meta property="article:modified_time" content="2023-08-02T19:12:44.690Z">
+<meta property="article:author" content="Scarborough">
+<meta property="article:tag" content="算法,acm,电子科大">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://101.42.54.79/posts/undefined.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '图论：最短路相关算法-Dijstra,SPFA and Floyd',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-03 03:12:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://cdn.cbd.int/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="Scarborough's Fair" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-home"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Scarborough's Fair"><span class="site-name">Scarborough's Fair</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-home"></i><span> 追番</span></a></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope"></i><span> 留言板</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">图论：最短路相关算法-Dijstra,SPFA and Floyd</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-07-15T14:46:32.000Z" title="发表于 2023-07-15 22:46:32">2023-07-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-02T19:12:44.690Z" title="更新于 2023-08-03 03:12:44">2023-08-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="图论：最短路相关算法-Dijstra,SPFA and Floyd"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h1><p>暑假集训用到了最短路的板子但之前的板子没存下来，在加上之前也看的不是很明白，故这里放点笔记；</p>
+<p>部分板子目前还未测试过，谨慎使用<script type="math/tex">(2023.7.15)</script>；</p>
+<h1 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h1><h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>用<strong>链式前向星</strong>方式存储一个有权图<script type="math/tex">G(V:E)</script>，找到点 <script type="math/tex">i,j</script> 之间权值最小的路径长度；</p>
+<p>注意：有时题目中的图其实就是树，而树的路径长度用 <script type="math/tex">dfs</script> 就好了不需要用这个；</p>
+<p>通常包括<script type="math/tex">\ Dijstra 算法,SPFA \ and \ Floyd算法</script>，<del>其中小心SPFA被卡爆（）；</del></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><h3 id="Dijstra-算法"><a href="#Dijstra-算法" class="headerlink" title="Dijstra 算法"></a><script type="math/tex">Dijstra</script> 算法</h3><h4 id="Notice"><a href="#Notice" class="headerlink" title="Notice:"></a>Notice:</h4><ul>
+<li><p>该算法只能处理边<strong>正权图</strong>的<strong>单源</strong>最短路问题，但是它的效率十分优秀，一般采用带小根堆优先队列优化<del>（<script type="math/tex">ZKW</script>线段树!<script type="math/tex">Fibonnaci</script>堆!）</del>；</p>
+</li>
+<li><p>时间复杂度为<script type="math/tex">O((|V|+|E|)log|V|)</script>;</p>
+</li>
+<li><p>但这个复杂度放在稠密图里可能会被$%<script type="math/tex">$hack</script>,需要换成邻接矩阵的方式存图，复杂度为<script type="math/tex">O(|V|^2)</script>,<del>遇到了再补吧</del>；</p>
+</li>
+</ul>
+<h4 id="Proof："><a href="#Proof：" class="headerlink" title="Proof："></a>Proof：</h4><ul>
+<li>对于每个点<script type="math/tex">v</script>均维护一个「当前最短距离数组」<script type="math/tex">dis[v]</script> 以及「访问数组」<script type="math/tex">vis[v]</script>,首先将<script type="math/tex">dis[u]</script>初始化为0，将其他点的距离初始化为无穷，并将所有点初始化为未访问的。记<script type="math/tex">e[i]:u-v</script>的边权为 <script type="math/tex">e[i].w</script>。然后进行以下步骤：<ol>
+<li>从所有未访问的点中，找出当前距离最小的,并将其标记为已访问的;</li>
+<li>调整所有出边连接但<strong>尚未访问</strong>的点，转移状态；</li>
+<li>重复1和2步骤，直到所有点都已访问，因为所有边权权值均为正的，所以用之后访问的结点是不能更新已经访问过的结点的（因为贪婪算法下若可以更新的话必定在还在之前就已经更新过了）；</li>
+<li>可以用<code>pre[y]=i</code>维护最短的路径（点边关系）；</li>
+</ol>
+</li>
+</ul>
+<h4 id="Template："><a href="#Template：" class="headerlink" title="Template："></a>Template：</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4779">标准版询问单源最短路径</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> local</span></span><br><span class="line"><span class="comment">//#pragma GCC optimize(2)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">200005</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span>&#123;</span><br><span class="line">    <span class="type">int</span> head;</span><br><span class="line">    <span class="type">int</span> to;</span><br><span class="line">    <span class="type">int</span> nxt;</span><br><span class="line">    <span class="type">int</span> w;</span><br><span class="line">&#125;e[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> w,<span class="type">int</span>&amp; cnt,std::vector&lt;<span class="type">int</span>&gt;&amp; head)</span></span>&#123;</span><br><span class="line">    e[cnt].nxt=head[u];</span><br><span class="line">    head[u]=cnt;</span><br><span class="line">    e[cnt].head=u,e[cnt].to=v,e[cnt].w=w;</span><br><span class="line">    cnt++;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;<span class="comment">//链式前向星建图</span></span><br><span class="line"><span class="comment">//*****************************************************************************************//</span></span><br><span class="line"></span><br><span class="line"><span class="type">long</span> <span class="type">long</span> dis[maxn]; </span><br><span class="line"><span class="comment">//int pre[maxn];</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> INF=<span class="number">1000000009</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span>&#123;<span class="comment">//使用Node维护每次要更新的点和距离</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> distance;</span><br><span class="line">    <span class="type">int</span> position;</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">long</span> <span class="type">long</span> a,<span class="type">int</span> b)&#123;distance=a;position=b;&#125;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">operator</span> &gt;(<span class="type">const</span> Node&amp;obj) <span class="type">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> distance&gt;obj.distance;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cmp</span>&#123;<span class="comment">//小根堆比较函数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Node&amp;a,Node&amp;b)</span><span class="type">const</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a&gt;b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">std::priority_queue&lt;Node,std::vector&lt;Node&gt;,cmp&gt; disQ;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Dijstra</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> n,<span class="type">long</span> <span class="type">long</span> (&amp;dis)[maxn],std::vector&lt;<span class="type">int</span>&gt;&amp; head<span class="comment">/*,int (&amp;pre)[maxn]*/</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) dis[i]=INF;</span><br><span class="line">    dis[u]=<span class="number">0</span>;</span><br><span class="line">    disQ.<span class="built_in">push</span>(<span class="built_in">Node</span>(<span class="number">0</span>,u));<span class="comment">//保存用来更新的队列</span></span><br><span class="line">    <span class="type">bool</span> vis[maxn];</span><br><span class="line">    <span class="built_in">memset</span>(vis,<span class="literal">false</span>,<span class="built_in">sizeof</span>(vis));<span class="comment">//初始化</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!disQ.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="type">int</span> x=disQ.<span class="built_in">top</span>().position;</span><br><span class="line">        disQ.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(vis[x]) <span class="keyword">continue</span>; vis[x]=<span class="literal">true</span>;<span class="comment">//不再对已访问过的位置进行访问</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=head[x];j!=<span class="number">-1</span>;j=e[j].nxt)&#123;</span><br><span class="line">            <span class="type">int</span> y=e[j].to;<span class="comment">//遍历当前位置的邻点，并更新它们</span></span><br><span class="line">            <span class="keyword">if</span>(dis[y]&gt;dis[x]+e[j].w)&#123;</span><br><span class="line">                dis[y]=dis[x]+e[j].w;</span><br><span class="line">                <span class="keyword">if</span>(!vis[y]) disQ.<span class="built_in">push</span>(<span class="built_in">Node</span>(dis[y],y))<span class="comment">/*,pre[y]=i*/</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//****************************************************************************************//</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);</span></span><br><span class="line">    <span class="meta">#<span class="keyword">ifdef</span> local</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;in.txt&quot;</span>,<span class="string">&quot;r&quot;</span>,stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;out.txt&quot;</span>,<span class="string">&quot;w&quot;</span>,stdout);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">// local</span></span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n,m,s;</span><br><span class="line">    std::cin&gt;&gt;n&gt;&gt;m&gt;&gt;s;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> cnt=<span class="number">0</span>;</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; head;<span class="comment">//head[u],头为u的当前最晚出现的边标号</span></span><br><span class="line">    head.<span class="built_in">resize</span>(n+<span class="number">1</span>,<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="type">int</span> u,v,w;</span><br><span class="line">        std::cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        <span class="built_in">add</span>(u,v,w,cnt,head);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//memset(pre,0,sizeof(pre));</span></span><br><span class="line">    <span class="built_in">Dijstra</span>(s,n,dis,head);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i!=<span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        std::cout&lt;&lt;dis[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Floyd-算法"><a href="#Floyd-算法" class="headerlink" title="Floyd 算法"></a><script type="math/tex">Floyd</script> 算法</h3><h4 id="Notice-1"><a href="#Notice-1" class="headerlink" title="Notice"></a>Notice</h4><ul>
+<li><script type="math/tex">Floyd</script> 算法是基于最朴素的动态规划的思想，求出全局上的任意两点的最短路问题，可以处理负边权的情况；</li>
+<li>我们知道对于图<script type="math/tex">G</script> 中存在负权值环的话，沿着这个环一直前进是不会得到最短路的，<script type="math/tex">Floyd</script> 算法也无法处理这类的问题；</li>
+<li>在一些加了若干限制的最短路问题中，往往都要回归到朴素的<script type="math/tex">Floyd</script>算法来；</li>
+</ul>
+<h4 id="Proof"><a href="#Proof" class="headerlink" title="Proof"></a>Proof</h4><p>考虑对每个<script type="math/tex">k</script>值，「<script type="math/tex">i</script>到<script type="math/tex">j</script> 的路径只允许经过标号不大于<script type="math/tex">k</script>的点」中最短路径长度<script type="math/tex">dis[i][j]</script>，明显<script type="math/tex">k=n</script>是我们所求问题的答案；</p>
+<ul>
+<li><p>初始<script type="math/tex">k=0</script>，所欲值都是正无穷；</p>
+</li>
+<li><p>递归的说，对于已有的<script type="math/tex">k-1</script>允许的最短路径，新的最短路径要么经过<script type="math/tex">k</script>,要么维持不变；</p>
+</li>
+<li><p>状态转移方程为</p>
+<script type="math/tex; mode=display">
+dis[i][j]=min(dis[i][j],dis[i][k]+dis[k][j]),for\  all\  (i,j)s</script></li>
+<li><p>时间复杂度为<script type="math/tex">O(|V|^3)</script>;</p>
+</li>
+</ul>
+<h4 id="Template"><a href="#Template" class="headerlink" title="Template:"></a>Template:</h4><p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3371">弱化版单源最短路径，不是正解，只有70分</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//#pragma GCC optimize(2)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">10005</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">500005</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">long</span> <span class="type">long</span> dis[maxn][maxn]; </span><br><span class="line"><span class="type">const</span> <span class="type">long</span> <span class="type">long</span> INF= (<span class="number">1</span>&lt;&lt;<span class="number">31</span>)<span class="number">-1</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Floyd</span><span class="params">(<span class="type">int</span> n,<span class="type">long</span> <span class="type">long</span> (&amp;dis)[maxn][maxn])</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;k&lt;=n;k++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">                dis[i][j]=std::<span class="built_in">min</span>(dis[i][j],dis[i][k]+dis[k][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);</span></span><br><span class="line">    <span class="meta">#<span class="keyword">ifdef</span> local</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;in.txt&quot;</span>,<span class="string">&quot;r&quot;</span>,stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;out.txt&quot;</span>,<span class="string">&quot;w&quot;</span>,stdout);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">// local</span></span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n,m,s;</span><br><span class="line">    std::cin&gt;&gt;n&gt;&gt;m&gt;&gt;s;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            dis[i][j]= INF;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="type">int</span> u,v,w;</span><br><span class="line">        std::cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        dis[u][v]=std::<span class="built_in">min</span>(dis[u][v],w*<span class="number">1LL</span>);<span class="comment">//可能由重边</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">Floyd</span>(n,dis);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i!=<span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        std::cout&lt;&lt;((i!=s)?dis[s][i]:<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="SPFA-算法"><a href="#SPFA-算法" class="headerlink" title="SPFA 算法"></a><script type="math/tex">SPFA</script> 算法</h3><h4 id="Notice-2"><a href="#Notice-2" class="headerlink" title="Notice:"></a>Notice:</h4><ul>
+<li>对于一般的带权图，不同于正权图的<script type="math/tex">relax</script>操作每次取出最小的<script type="math/tex">dis</script>来进行下一步，边权有负数是不保证正确性的，所以我们维护一个普通的队列就行了，这也是<script type="math/tex">SPFA</script>经常得卡爆的地方，构造数据可以欺骗算法进入冗余的分支，使得队列的进出和<script type="math/tex">relax</script>多了很多不必要的操作；</li>
+<li>这个算法本质是<script type="math/tex">Bellmon-Ford</script>算法的局部优化，复杂度为<script type="math/tex">O(|V||E|)</script>；</li>
+<li>所以说没必要仔细解释<script type="math/tex">Bellmon</script>算法对全局的<script type="math/tex">n-1</script>次<script type="math/tex">relax</script>操作了，卡<script type="math/tex">SPFA</script>的一定卡<script type="math/tex">Bellmon</script>;</li>
+<li>（保证输入是随机数据）慎用，不要偷懒！<del>因为它已经死了</del>；</li>
+</ul>
+<h4 id="Template-1"><a href="#Template-1" class="headerlink" title="Template:"></a>Template:</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//#pragma GCC optimize(2)</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">100005</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N=<span class="number">500005</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span>&#123;</span><br><span class="line">    <span class="type">int</span> head;</span><br><span class="line">    <span class="type">int</span> to;</span><br><span class="line">    <span class="type">int</span> nxt;</span><br><span class="line">    <span class="type">int</span> w;</span><br><span class="line">&#125;e[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> w,<span class="type">int</span>&amp; cnt,std::vector&lt;<span class="type">int</span>&gt;&amp; head)</span></span>&#123;</span><br><span class="line">    e[cnt].nxt=head[u];</span><br><span class="line">    head[u]=cnt;</span><br><span class="line">    e[cnt].head=u,e[cnt].to=v,e[cnt].w=w;</span><br><span class="line">    cnt++;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//******************************************************************************//</span></span><br><span class="line"><span class="type">const</span> <span class="type">long</span> <span class="type">long</span> INF=(<span class="number">1</span>&lt;&lt;<span class="number">31</span>)<span class="number">-1</span>;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> dis[maxn];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">SPFA</span><span class="params">(<span class="type">int</span> s,<span class="type">int</span> n,<span class="type">long</span> <span class="type">long</span> (&amp;dis)[maxn],std::vector&lt;<span class="type">int</span>&gt; &amp;head)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) dis[i]=INF;</span><br><span class="line">    dis[s]=<span class="number">0</span>;</span><br><span class="line">    <span class="type">bool</span> vis[maxn];</span><br><span class="line">    <span class="built_in">memset</span>(vis,<span class="literal">false</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line"></span><br><span class="line">    std::queue&lt;<span class="type">int</span>&gt; disQ;</span><br><span class="line">    disQ.<span class="built_in">push</span>(s);</span><br><span class="line">    <span class="keyword">while</span>(!disQ.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        <span class="type">int</span> x=disQ.<span class="built_in">front</span>();</span><br><span class="line">        disQ.<span class="built_in">pop</span>();</span><br><span class="line">        vis[x]=<span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=head[x];i!=<span class="number">-1</span>;i=e[i].nxt)&#123;</span><br><span class="line">            <span class="type">int</span> y=e[i].to;</span><br><span class="line">            <span class="keyword">if</span>(dis[y]&gt;dis[x]+e[i].w)&#123;</span><br><span class="line">                dis[y]=dis[x]+e[i].w;</span><br><span class="line">                <span class="keyword">if</span>(!vis[y])&#123;</span><br><span class="line">                    vis[y]=<span class="literal">true</span>;</span><br><span class="line">                    disQ.<span class="built_in">push</span>(y);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//*************************************************************************************//</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);</span></span><br><span class="line">    <span class="meta">#<span class="keyword">ifdef</span> local</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;in.txt&quot;</span>,<span class="string">&quot;r&quot;</span>,stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;out.txt&quot;</span>,<span class="string">&quot;w&quot;</span>,stdout);</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span> <span class="comment">// local</span></span></span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> n,m,s;</span><br><span class="line">    std::cin&gt;&gt;n&gt;&gt;m&gt;&gt;s;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> cnt=<span class="number">0</span>;</span><br><span class="line">    std::vector&lt;<span class="type">int</span>&gt; head;<span class="comment">//head[u],头为u的当前最晚出现的边标号</span></span><br><span class="line">    head.<span class="built_in">resize</span>(n+<span class="number">1</span>,<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">        <span class="type">int</span> u,v,w;</span><br><span class="line">        std::cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        <span class="built_in">add</span>(u,v,w,cnt,head);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//memset(pre,0,sizeof(pre));</span></span><br><span class="line">    <span class="built_in">SPFA</span>(s,n,dis,head);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(i!=<span class="number">1</span>) <span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        std::cout&lt;&lt;dis[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><del>暂时没有；</del></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3385">洛谷P3385 【模板】负环</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5905">洛谷P5909【模板】Johnson 全源最短路</a></p>
+<h1 id="Remark"><a href="#Remark" class="headerlink" title="Remark"></a>Remark</h1><p>还是多整理一些模板少打比赛吧，太坐牢了，<del>怎么写那么快的啊</del>；</p>
+<p>学校的专题等一波题解发下来吧，真的不知道里面是什么毒瘤数据；</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://101.42.54.79">Scarborough</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://101.42.54.79/posts/undefined.html">https://101.42.54.79/posts/undefined.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://101.42.54.79" target="_blank">Scarborough's Fair</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/undefined.html" title="图论:Tarjan缩点相关，SCC问题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">图论:Tarjan缩点相关，SCC问题</div></div></a></div><div class="next-post pull-right"><a href="/posts/3610a686.html" title="基于Multisim的方波-三角波-正弦波-锯齿波函数发生器电子电路仿真项目设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于Multisim的方波-三角波-正弦波-锯齿波函数发生器电子电路仿真项目设计</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Scarborough</div><div class="author-info__description">acmer/acgn/uestcer</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Preface"><span class="toc-number">1.</span> <span class="toc-text">Preface</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Content"><span class="toc-number">2.</span> <span class="toc-text">Content</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Problem"><span class="toc-number">2.1.</span> <span class="toc-text">Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Solution"><span class="toc-number">2.2.</span> <span class="toc-text">Solution</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dijstra-%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.1.</span> <span class="toc-text">Dijstra 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Notice"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">Notice:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proof%EF%BC%9A"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">Proof：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Template%EF%BC%9A"><span class="toc-number">2.2.1.3.</span> <span class="toc-text">Template：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Floyd-%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.2.</span> <span class="toc-text">Floyd 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Notice-1"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">Notice</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proof"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">Proof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Template"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">Template:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPFA-%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.3.</span> <span class="toc-text">SPFA 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Notice-2"><span class="toc-number">2.2.3.1.</span> <span class="toc-text">Notice:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Template-1"><span class="toc-number">2.2.3.2.</span> <span class="toc-text">Template:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example"><span class="toc-number">2.3.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Remark"><span class="toc-number">3.</span> <span class="toc-text">Remark</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/undefined.html" title="图论:Tarjan缩点相关，SCC问题">图论:Tarjan缩点相关，SCC问题</a><time datetime="2023-08-02T18:53:22.000Z" title="发表于 2023-08-03 02:53:22">2023-08-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/undefined.html" title="图论：最短路相关算法-Dijstra,SPFA and Floyd">图论：最短路相关算法-Dijstra,SPFA and Floyd</a><time datetime="2023-07-15T14:46:32.000Z" title="发表于 2023-07-15 22:46:32">2023-07-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/3610a686.html" title="基于Multisim的方波-三角波-正弦波-锯齿波函数发生器电子电路仿真项目设计">基于Multisim的方波-三角波-正弦波-锯齿波函数发生器电子电路仿真项目设计</a><time datetime="2023-07-01T20:50:39.000Z" title="发表于 2023-07-02 04:50:39">2023-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Scarborough</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destory" data-id="8533742424" data-server="netease" data-type="playlist" data-order="list" data-fixed="true" data-preload="aoto" data-mini="true" data-autoplay="false" data-mutex="true" data-mini="true"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var qweather_key = '338c533054174082bd8d8f65ad4b7c41';
+  var gaud_map_key = '1cc5d363f68434a505c4f5ee0218970b';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '112.982279,28.19409';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v5.4.0" title=""><img src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.2.2" title=""><img src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://cloud.tencent.com/" style="margin-inline:5px" data-title="本站使用腾讯云为静态资源提供CDN加速" title=""><img src="https://img.shields.io/badge/CDN-cloudtencent-orange?style=flat&amp;logo=jsDelivr" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用BY-NC-SA协议进行许可" title=""><img src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.min.js"></script><script async src="/js/ali_font.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"superSample":2,"position":"right","width":100,"height":200,"vOffset":-100},"mobile":{"show":false,"scale":0.5},"react":{"opacity":0.85},"log":false});</script></body></html>
