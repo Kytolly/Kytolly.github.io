@@ -2527,7 +2527,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     root: '/',
     debug: "env",
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1699277066060),
+    lastupdate: new Date(1699282814066),
     cdn: {
       izitoast_css: 'https://cdn.bootcdn.net/ajax/libs/izitoast/1.4.0/css/iziToast.min.css',
       izitoast_js: 'https://cdn.bootcdn.net/ajax/libs/izitoast/1.4.0/js/iziToast.min.js',
@@ -3282,7 +3282,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </li>
 </ul>
 <h2 id="第二章：计算机的数值与编码"><a href="#第二章：计算机的数值与编码" class="headerlink" title="第二章：计算机的数值与编码"></a>第二章：计算机的数值与编码</h2><h3 id="补码"><a href="#补码" class="headerlink" title="补码"></a>补码</h3><ul>
-<li>对于一个r位数d，对应补码为$f(d)=\begin{cases} &amp;\text d ,d&gt;0;\ &amp;\text (2^r-1)-|d|+1 ,d&gt;0;\end{cases} $；</li>
+<li>对于一个r位数d，对应补码为$f(d)=\begin{cases} &amp;\text d ,d&gt;0;\\ &amp;\text (2^r-1)-|d|+1 ,d&gt;0;\end{cases} $；</li>
 <li>对于正数而言，补码等于本身，对于负数而言，补码等于其绝对值的反码加1；</li>
 <li>已知补码，若最高位为0，表示正数，原码等于补码；若最高位为1，原码为补码减1后取反得到的正数的相反数；</li>
 <li>补码表示的范围是$[100..0,011..1]$,也即$[-2^{n-1},2^{n-1}-1]$;</li>
@@ -3362,7 +3362,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <h4 id="对偶定理"><a href="#对偶定理" class="headerlink" title="对偶定理"></a>对偶定理</h4><p>与、或运算置换，0、1置换，得到对偶式；<br>两相等逻辑表达式的对偶式相等；</p>
 <h4 id="最大项之积和最小项之和"><a href="#最大项之积和最小项之和" class="headerlink" title="最大项之积和最小项之和"></a>最大项之积和最小项之和</h4><p>最小项编码依据是真值为1；</p>
 <p>最大项编码依据是真值为0；</p>
-<p>标准形式:<br>$F=\sum<em>{}{m(i_1,i_2,…,i_k)}=\prod</em>{}{M(j_1,j_2,…,j_t)}$</p>
+<p>标准形式:<br>$F=\sum_{}{m(i_1,i_2,…,i_k)}=\prod_{}{M(j_1,j_2,…,j_t)}$</p>
 <p>反复利用$B=(A+\overline {A})B$，  $A+BC=(A+B)(A+C)$即可；</p>
 <p>在$Carnot$ 图中，每个格子进行$0～2^n-1$的编码，相邻两个格子编码$Haming$距离为1(换言之，构成一个Gray码)，用尽量少的框去框尽可能多的1，方便得到更简单的逻辑电路图</p>
 <p>利用标准形式可以判断两个逻辑函数是否相等，即逻辑函数相等那么他们的标准形式等价</p>
@@ -3375,10 +3375,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </li>
 <li><p>NMOS和PMOS晶体管共用形成CMOS逻辑 </p>
 <ul>
-<li><p>对于NMOS，$V<em>{gs}=0V$断开，$V</em>{gs}=5V$导通；</p>
+<li><p>对于NMOS，$V_{gs}=0V$断开，$V_{gs}=5V$导通；</p>
 <p><img src="https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202310242323515.png" class="lazyload" data-srcset="https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202310242323515.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="image-20231024232258414"></p>
 </li>
-<li><p>对于PMOS，$V<em>{gs}=0V$断开，$V</em>{gs}=-5V$导通；</p>
+<li><p>对于PMOS，$V_{gs}=0V$断开，$V_{gs}=-5V$导通；</p>
 <p><img src="https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202310242323108.png" class="lazyload" data-srcset="https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202310242323108.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="image-20231024232343077"></p>
 </li>
 </ul>
@@ -3408,13 +3408,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <ol>
 <li><p>传播延迟</p>
 <p>输入信号变化到输出信号变化所需时间；</p>
-<p>$t<em>p=t</em>{pLH}+t_{pHL}$；</p>
+<p>$t_p=t_{pLH}+t_{pHL}$；</p>
 <p>启示：尽可能使电路简单化以降低传播延迟；</p>
 <p><img src="https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202310261015277.png" class="lazyload" data-srcset="https://kytolly-1318202921.cos.ap-chengdu.myqcloud.com/202310261015277.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="image-20231026101525221"></p>
 </li>
 <li><p>动态功耗</p>
 <p>电路处于非稳态时，MOS部分导通产生的漏电流带来功耗，是总功耗的主要部分；</p>
-<p>$P<em>D=(C</em>{PD}+C<em>L)V</em>{CC}\times f$ ;</p>
+<p>$P_D=(C_{PD}+C_L)V_{CC}\times f$ ;</p>
 </li>
 </ol>
 <h3 id="Verilog"><a href="#Verilog" class="headerlink" title="Verilog"></a>Verilog</h3><h2 id="第四章：计算机芯片的基本电路组成"><a href="#第四章：计算机芯片的基本电路组成" class="headerlink" title="第四章：计算机芯片的基本电路组成"></a>第四章：计算机芯片的基本电路组成</h2><h3 id="组合逻辑电路"><a href="#组合逻辑电路" class="headerlink" title="组合逻辑电路"></a>组合逻辑电路</h3><p>注意与非门、或非门比较简单，注意转化为与非和或非的组合；</p>
