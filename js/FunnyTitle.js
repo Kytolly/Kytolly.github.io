@@ -8,7 +8,7 @@ document.addEventListener('visibilitychange', function () {
     }
     else {
         $('[rel="icon"]').attr('href', "/chotolly.ico");
-        document.title = '(ฅ>ω<*ฅ) 噫又好啦 ~' + OriginTitle;
+        document.title = '(ฅ>ω<*ฅ)欢迎回来!先吃饭,还是先洗澡,还是瓦达西~~' + OriginTitle;
         titleTime = setTimeout(function () {
             document.title = OriginTitle;
         }, 2000);
