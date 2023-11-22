@@ -183,13 +183,6 @@
   </url>
   
   <url>
-    <loc>https://101.42.54.79/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2023-11-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://101.42.54.79/tags/%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2023-11-22</lastmod>
     <changefreq>weekly</changefreq>
@@ -198,6 +191,13 @@
   
   <url>
     <loc>https://101.42.54.79/tags/verilog/</loc>
+    <lastmod>2023-11-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://101.42.54.79/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2023-11-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
