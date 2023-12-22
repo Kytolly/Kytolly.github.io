@@ -292,11 +292,11 @@
 <meta property="og:title" content="数据结构与算法实验：Josephus问题">
 <meta property="og:url" content="https://101.42.54.79/posts/49617.html">
 <meta property="og:site_name" content="Scarborough&#39;s Fair">
-<meta property="og:description" content="Preface 学校码图的数据结构实验第一题，因为是码图所以可以随便欺负,所以不需要写很高效的算法应该也能过吧； 但是鉴于码图的落后性，一些高级的新特性可能会编译不通过（据说内部编译器是VC2014），最多支持到c99； 让我们开始吧！ Content &lt;details&gt; &lt;summary&gt;这里是题目:Josephus环&lt;&#x2F;summary&gt; 用循环链表实现：N个">
+<meta property="og:description" content="Preface 学校码图的数据结构实验第一题，因为是码图所以可以随便欺负,所以不需要写很高效的算法应该也能过吧； 但是鉴于码图的落后性，一些高级的新特性可能会编译不通过（据说内部编译器是VC2014），最多支持到c99； 让我们开始吧！ Content  这里是题目:Josephus环 用循环链表实现：N个乘客同乘一艘船，因为严重超载，加上风高浪大，危险万分，因此船长告诉乘客，只有将部分乘客投入海">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2023-12-22T04:33:27.000Z">
-<meta property="article:modified_time" content="2023-12-22T05:16:01.392Z">
+<meta property="article:modified_time" content="2023-12-22T05:26:05.806Z">
 <meta property="article:author" content="Kytolly">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="实验">
@@ -2495,7 +2495,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     root: '/',
     debug: "env",
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1660614606622/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1703222211174),
+    lastupdate: new Date(1703222791364),
     cdn: {
       izitoast_css: 'https://cdn.bootcdn.net/ajax/libs/izitoast/1.4.0/css/iziToast.min.css',
       izitoast_js: 'https://cdn.bootcdn.net/ajax/libs/izitoast/1.4.0/js/iziToast.min.js',
@@ -3106,7 +3106,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：612 字</p>
+      <p>字数：600 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
@@ -3134,30 +3134,25 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>但是鉴于码图的落后性，一些高级的新特性可能会编译不通过（据说内部编译器是VC2014），最多支持到c99；</p>
 <p>让我们开始吧！</p>
 <h1 id="Content"><a href="#Content" class="headerlink" title="Content"></a>Content</h1>
-<pre><code><span class="hl-source hl-js"><span class="hl-keyword hl-operator hl-relational hl-js">&lt;</span><span class="hl-variable hl-other hl-readwrite hl-js">details</span><span class="hl-keyword hl-operator hl-relational hl-js">&gt;</span>
-<span class="hl-keyword hl-operator hl-relational hl-js">&lt;</span><span class="hl-variable hl-other hl-readwrite hl-js">summary</span><span class="hl-keyword hl-operator hl-relational hl-js">&gt;</span><span class="hl-variable hl-other hl-readwrite hl-js">这里是题目</span>:<span class="hl-variable hl-other hl-readwrite hl-js">Josephus环</span><span class="hl-keyword hl-operator hl-relational hl-js">&lt;</span><span class="hl-string hl-regexp hl-js"><span class="hl-punctuation hl-definition hl-string hl-begin hl-js">/</span>summary&gt;
-用循环链表实现：N个乘客同乘一艘船，因为严重超载，加上风高浪大，危险万分，因此船长告诉乘客，只有将部分乘客投入海中，其余人才能幸免于难。
-无奈，大家只得同意这种办法。于是N个人围成一圈<span class="hl-meta hl-group hl-regexp"><span class="hl-punctuation hl-definition hl-group hl-regexp">(</span>从1，2，3<span class="hl-constant hl-other hl-character-class hl-escape hl-backslash hl-regexp">.</span><span class="hl-constant hl-other hl-character-class hl-escape hl-backslash hl-regexp">.</span><span class="hl-constant hl-other hl-character-class hl-escape hl-backslash hl-regexp">.</span>N分别编号<span class="hl-punctuation hl-definition hl-group hl-regexp">)</span></span>。由编号为1的人开始，依次报数，数到第M人，便把他投入大海中，
-然后再从他的下一个人数起，数到第M人，再将他扔到大海中，如此循环地进行，直到剩下K个乘客为止。按顺序依次输出被扔下大海的乘客的编号。
-
-提交格式：
-实现int <span class="hl-keyword hl-operator hl-quantifier hl-regexp">*</span> solve<span class="hl-meta hl-group hl-regexp"><span class="hl-punctuation hl-definition hl-group hl-regexp">(</span>int N,int M,int K<span class="hl-punctuation hl-definition hl-group hl-regexp">)</span></span>函数。
+<details>
+<summary>这里是题目:Josephus环</summary>
+<p>用循环链表实现：N个乘客同乘一艘船，因为严重超载，加上风高浪大，危险万分，因此船长告诉乘客，只有将部分乘客投入海中，其余人才能幸免于难。
+无奈，大家只得同意这种办法。于是N个人围成一圈(从1，2，3...N分别编号)。由编号为1的人开始，依次报数，数到第M人，便把他投入大海中，
+然后再从他的下一个人数起，数到第M人，再将他扔到大海中，如此循环地进行，直到剩下K个乘客为止。按顺序依次输出被扔下大海的乘客的编号。</p>
+<p>提交格式：
+实现int * solve(int N,int M,int K)函数。
 函数参数为乘客人数N、间隔人数M和剩余乘客人数K，1&lt;=N&lt;=1000，1&lt;=M&lt;=500000，0&lt;=K&lt;N。
 函数返回值为按顺序被扔下大海乘客编号的数组。
-请不要printf输出任何内容。
-
-输入样例1：
-9 3 2 
+请不要printf输出任何内容。</p>
+<p>输入样例1：
+9 3 2
 输出样例1：
-3 6 9 4 8 5 2
-
-输入样例2：
+3 6 9 4 8 5 2</p>
+<p>输入样例2：
 12 5 6
 输出样例2：
-5 10 3 9 4 12
- 
-&lt;<span class="hl-punctuation hl-definition hl-string hl-end hl-js">/</span></span><span class="hl-variable hl-other hl-readwrite hl-js">details</span><span class="hl-keyword hl-operator hl-relational hl-js">&gt;</span>
-</span></code></pre>
+5 10 3 9 4 12</p>
+</details>
 <p>~~你让我用循环链表我就用？~~比较简单的办法当然是用数组来模拟链表，并且一个简单的优化就是报完数后应该等效为最多转一圈；</p>
 <p>直接贴代码</p>
 <pre><code><span class="hl-source hl-c++"><span class="hl-storage hl-type hl-c">int</span> <span class="hl-keyword hl-operator hl-c++">*</span><span class="hl-meta hl-function hl-c++"><span class="hl-entity hl-name hl-function hl-c++">solve</span></span><span class="hl-meta hl-function hl-parameters hl-c++"><span class="hl-meta hl-group hl-c++"><span class="hl-punctuation hl-section hl-group hl-begin hl-c++">(</span></span></span><span class="hl-meta hl-function hl-parameters hl-c++"><span class="hl-meta hl-group hl-c++"><span class="hl-storage hl-type hl-c">int</span> <span class="hl-variable hl-parameter hl-c++">N</span><span class="hl-punctuation hl-separator hl-c++">,</span> <span class="hl-storage hl-type hl-c">int</span> <span class="hl-variable hl-parameter hl-c++">M</span><span class="hl-punctuation hl-separator hl-c++">,</span> <span class="hl-storage hl-type hl-c">int</span> <span class="hl-variable hl-parameter hl-c++">K</span><span class="hl-punctuation hl-section hl-group hl-end hl-c++">)</span></span></span><span class="hl-meta hl-function hl-c++"><span class="hl-meta hl-block hl-c++"><span class="hl-punctuation hl-section hl-block hl-begin hl-c++">{</span></span></span><span class="hl-meta hl-function hl-c++"><span class="hl-meta hl-block hl-c++">
@@ -3208,7 +3203,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2023-12-22T13:16:01+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2023-12-22T13:26:05+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：2023年12月22日</p>
@@ -4581,7 +4576,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"Scarborough's Fair","url":"https://101.42.54.79/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Kytolly","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://101.42.54.79/","sameAs":["https://github.com/volantis-x"],"description":"uestcer/cs"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://101.42.54.79/","name":"Scarborough's Fair"}},{"@type":"ListItem","position":3,"item":{"@id":"https://101.42.54.79/posts/49617.html","name":"数据结构与算法实验：Josephus问题"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"Scarborough's Fair","url":"https://101.42.54.79/","keywords":"电子科大","description":"uestcer/cs","author":{"@type":"Person","name":"Kytolly","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://101.42.54.79/","description":"uestcer/cs"},"publisher":{"@type":"Organization","name":"Scarborough's Fair","url":"https://101.42.54.79/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"https://101.42.54.79?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"数据结构与算法实验：Josephus问题","description":"uestcer/cs","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https://101.42.54.79/posts/49617.html"},"author":{"@type":"Person","name":"Kytolly","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://101.42.54.79/"},"publisher":{"@type":"Organization","name":"Scarborough's Fair","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"https://101.42.54.79/posts/49617.html","wordCount":0,"datePublished":"2023-12-22T04:33:27.000Z","dateModified":"2023-12-22T05:16:01.392Z","keywords":"数据结构,实验","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"Scarborough's Fair","url":"https://101.42.54.79/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Kytolly","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://101.42.54.79/","sameAs":["https://github.com/volantis-x"],"description":"uestcer/cs"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://101.42.54.79/","name":"Scarborough's Fair"}},{"@type":"ListItem","position":3,"item":{"@id":"https://101.42.54.79/posts/49617.html","name":"数据结构与算法实验：Josephus问题"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"Scarborough's Fair","url":"https://101.42.54.79/","keywords":"电子科大","description":"uestcer/cs","author":{"@type":"Person","name":"Kytolly","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://101.42.54.79/","description":"uestcer/cs"},"publisher":{"@type":"Organization","name":"Scarborough's Fair","url":"https://101.42.54.79/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"https://101.42.54.79?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"数据结构与算法实验：Josephus问题","description":"uestcer/cs","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https://101.42.54.79/posts/49617.html"},"author":{"@type":"Person","name":"Kytolly","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://101.42.54.79/"},"publisher":{"@type":"Organization","name":"Scarborough's Fair","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"https://101.42.54.79/posts/49617.html","wordCount":0,"datePublished":"2023-12-22T04:33:27.000Z","dateModified":"2023-12-22T05:26:05.806Z","keywords":"数据结构,实验","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1660614606622/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
