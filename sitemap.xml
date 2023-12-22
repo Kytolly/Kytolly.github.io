@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://101.42.54.79/posts/21751.html</loc>
+    
+    <lastmod>2023-12-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://101.42.54.79/posts/52065.html</loc>
     
     <lastmod>2023-12-22</lastmod>
@@ -173,14 +182,14 @@
 
   
   <url>
-    <loc>https://101.42.54.79/tags/%E7%AE%97%E6%B3%95/</loc>
+    <loc>https://101.42.54.79/tags/%E5%9B%BE%E8%AE%BA/</loc>
     <lastmod>2023-12-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://101.42.54.79/tags/%E5%9B%BE%E8%AE%BA/</loc>
+    <loc>https://101.42.54.79/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2023-12-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -209,6 +218,20 @@
   
   <url>
     <loc>https://101.42.54.79/tags/DFS/</loc>
+    <lastmod>2023-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://101.42.54.79/tags/DP/</loc>
+    <lastmod>2023-12-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://101.42.54.79/tags/%E7%9F%A9%E9%98%B5%E8%BF%9E%E4%B9%98/</loc>
     <lastmod>2023-12-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
